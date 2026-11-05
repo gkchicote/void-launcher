@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="void_bg">#0D0D1A</color>
+    <color name="void_surface">#1A1A2E</color>
+    <color name="void_accent">#6C5CE7</color>
+    <color name="void_accent_light">#8B7FEB</color>
+    <color name="void_text_primary">#FFFFFF</color>
+    <color name="void_text_secondary">#B0B0B0</color>
+    <color name="void_search_bg">#2A2A3E</color>
+    <color name="void_dock_bg">#16162A</color>
+</resources>

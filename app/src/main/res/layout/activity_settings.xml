@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/settings_root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#1A1A2E"
+    android:fitsSystemWindows="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <!-- Toolbar -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:paddingTop="32dp"
+            android:paddingBottom="16dp">
+
+            <ImageView
+                android:id="@+id/settings_back"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:src="@android:drawable/ic_menu_revert"
+                android:tint="#FFFFFF"
+                android:padding="4dp" />
+
+            <TextView
+                android:id="@+id/settings_title"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Void Launcher Settings"
+                android:textColor="#FFFFFF"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:paddingStart="12dp" />
+
+            <TextView
+                android:id="@+id/settings_prime_badge"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="PRIME"
+                android:textColor="#6C5CE7"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                android:background="@drawable/prime_badge_bg"
+                android:paddingHorizontal="10dp"
+                android:paddingVertical="3dp" />
+        </LinearLayout>
+
+        <!-- Theme Section -->
+        <TextView style="@style/SectionHeader" android:text="Theme" />
+
+        <TextView style="@style/SettingLabel" android:text="Theme Mode" />
+        <Spinner android:id="@+id/theme_spinner"
+            android:layout_width="match_parent"
+            android:layout_height="44dp"
+            android:layout_marginBottom="12dp" />
+
+        <TextView style="@style/SettingLabel" android:text="Accent Color (hex)" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="16dp">
+            <EditText
+                android:id="@+id/accent_color_input"
+                android:layout_width="0dp"
+                android:layout_height="44dp"
+                android:layout_weight="1"
+                android:textColor="#FFFFFF"
+                android:textSize="14sp"
+                android:background="@drawable/search_bar_bg"
+                android:paddingHorizontal="12dp"
+                android:singleLine="true" />
+            <Button
+                android:id="@+id/accent_apply_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="44dp"
+                android:text="Apply"
+                android:layout_marginStart="8dp"
+                android:textSize="13sp" />
+        </LinearLayout>
+
+        <!-- Grid Section -->
+        <TextView style="@style/SectionHeader" android:text="Grid &amp; Layout" />
+
+        <TextView android:id="@+id/grid_columns_label" style="@style/SettingLabel" android:text="Columns: 4" />
+        <SeekBar android:id="@+id/grid_columns_seek"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="12dp" />
+
+        <TextView android:id="@+id/grid_rows_label" style="@style/SettingLabel" android:text="Rows: 5" />
+        <SeekBar android:id="@+id/grid_rows_seek"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="12dp" />
+
+        <TextView android:id="@+id/icon_size_label" style="@style/SettingLabel" android:text="Icon Size: 58dp" />
+        <SeekBar android:id="@+id/icon_size_seek"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp" />
+
+        <Switch android:id="@+id/show_labels_switch"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Show App Labels"
+            android:textColor="#CCCCCC"
+            android:layout_marginBottom="8dp" />
+
+        <Switch android:id="@+id/show_dock_switch"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Show Dock"
+            android:textColor="#CCCCCC"
+            android:layout_marginBottom="8dp" />
+
+        <Switch android:id="@+id/show_search_switch"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Show Search Bar"
+            android:textColor="#CCCCCC"
+            android:layout_marginBottom="16dp" />
+
+        <!-- Animations -->
+        <TextView style="@style/SectionHeader" android:text="Animations" />
+
+        <TextView style="@style/SettingLabel" android:text="Animation Style" />
+        <Spinner android:id="@+id/animation_spinner"
+            android:layout_width="match_parent"
+            android:layout_height="44dp"
+            android:layout_marginBottom="12dp" />
+
+        <TextView android:id="@+id/animation_speed_label" style="@style/SettingLabel" android:text="Speed: 1.0x" />
+        <SeekBar android:id="@+id/animation_speed_seek"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp" />
+
+        <!-- Gestures -->
+        <TextView style="@style/SectionHeader" android:text="Gestures" />
+        <Button android:id="@+id/gesture_settings_btn"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:text="Configure Gestures"
+            android:layout_marginBottom="16dp" />
+
+        <!-- Hidden Apps -->
+        <TextView style="@style/SectionHeader" android:text="Hidden Apps" />
+        <Button android:id="@+id/hidden_apps_btn"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:text="Manage Hidden Apps"
+            android:layout_marginBottom="16dp" />
+
+        <!-- Icon Packs -->
+        <TextView style="@style/SectionHeader" android:text="Icon Packs" />
+        <Button android:id="@+id/icon_pack_btn"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:text="Choose Icon Pack"
+            android:layout_marginBottom="16dp" />
+
+        <!-- About -->
+        <TextView style="@style/SectionHeader" android:text="About" />
+        <TextView android:id="@+id/about_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="#999999"
+            android:textSize="13sp"
+            android:paddingBottom="32dp" />
+
+    </LinearLayout>
+</ScrollView>

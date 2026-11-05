@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+
+    <!-- V shape - Void Launcher icon -->
+    <path
+        android:fillColor="#6C5CE7"
+        android:pathData="M34,30 L54,78 L74,30 L66,30 L54,66 L42,30 Z" />
+
+    <!-- subtle inner glow line -->
+    <path
+        android:fillColor="#8B7FEB"
+        android:pathData="M40,34 L54,70 L68,34 L64,34 L54,62 L44,34 Z" />
+</vector>

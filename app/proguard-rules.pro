@@ -1,0 +1,4 @@
+-keep class com.mahi.launcher.** { *; }
+-keepclassmembers class * extends android.app.Activity { *; }
+-keepclassmembers class * extends android.content.BroadcastReceiver { *; }
+-dontwarn com.bumptech.glide.**
