@@ -64,23 +64,11 @@ object AnimationHelper {
     }
 
     fun animateGridItemEntry(view: View, position: Int) {
-        view.alpha = 0f
-        view.translationY = 60f
-        view.scaleX = 0.9f
-        view.scaleY = 0.9f
-
-        val delay = (position * 30L).coerceAtMost(500L)
-        val duration = getSpeed()
-
-        view.animate()
-            .alpha(1f)
-            .translationY(0f)
-            .scaleX(1f)
-            .scaleY(1f)
-            .setDuration(duration)
-            .setStartDelay(delay)
-            .setInterpolator(OvershootInterpolator(0.8f))
-            .start()
+        // show all items instantly — no staggered animation
+        view.alpha = 1f
+        view.translationY = 0f
+        view.scaleX = 1f
+        view.scaleY = 1f
     }
 
     fun animateDrawerOpen(view: View) {

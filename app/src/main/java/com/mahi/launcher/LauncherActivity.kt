@@ -2,14 +2,18 @@ package com.mahi.launcher
 
 import android.annotation.SuppressLint
 import android.app.WallpaperManager
+import android.app.role.RoleManager
 import android.content.BroadcastReceiver
+import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
+import android.content.pm.ResolveInfo
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Build
 import android.os.Bundle
+import android.provider.Settings
 import android.view.MotionEvent
 import android.view.View
 import android.view.WindowManager
@@ -18,6 +22,7 @@ import android.widget.LinearLayout
 import android.widget.PopupMenu
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
@@ -28,6 +33,10 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 class LauncherActivity : AppCompatActivity() {
+
+    private companion object {
+        const val REQUEST_SET_DEFAULT_HOME = 1001
+    }
 
     private lateinit var appRepository: AppRepository
     private lateinit var gestureHandler: GestureHandler
@@ -85,6 +94,64 @@ class LauncherActivity : AppCompatActivity() {
             addAction(Intent.ACTION_TIME_TICK)
             addAction(Intent.ACTION_TIME_CHANGED)
         })
+
+        // first launch: prompt to set as default launcher
+        checkDefaultLauncher()
+    }
+
+    private fun checkDefaultLauncher() {
+        val isFirstRun = MahiApp.prefs.getBoolean("first_run_done", false)
+        if (isFirstRun) return
+
+        MahiApp.prefs.edit().putBoolean("first_run_done", true).apply()
+
+        if (!isDefaultLauncher()) {
+            promptSetDefaultLauncher()
+        }
+    }
+
+    private fun isDefaultLauncher(): Boolean {
+        val intent = Intent(Intent.ACTION_MAIN).apply {
+            addCategory(Intent.CATEGORY_HOME)
+        }
+        val resolveInfo: ResolveInfo? = packageManager.resolveActivity(intent, 0)
+        return resolveInfo?.activityInfo?.packageName == packageName
+    }
+
+    private fun promptSetDefaultLauncher() {
+        AlertDialog.Builder(this, com.google.android.material.R.style.ThemeOverlay_MaterialComponents_Dialog_Alert)
+            .setTitle("Void Launcher")
+            .setMessage("Deseja definir o Void Launcher como seu launcher padrão?")
+            .setPositiveButton("Sim") { _, _ ->
+                requestSetDefaultLauncher()
+            }
+            .setNegativeButton("Agora não", null)
+            .setCancelable(true)
+            .show()
+    }
+
+    private fun requestSetDefaultLauncher() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            // Android 10+: use RoleManager
+            val roleManager = getSystemService(Context.ROLE_SERVICE) as RoleManager
+            if (!roleManager.isRoleHeld(RoleManager.ROLE_HOME)) {
+                val intent = roleManager.createRequestRoleIntent(RoleManager.ROLE_HOME)
+                startActivityForResult(intent, REQUEST_SET_DEFAULT_HOME)
+                return
+            }
+        }
+        // fallback: open default apps settings
+        try {
+            val intent = Intent(Settings.ACTION_HOME_SETTINGS)
+            startActivity(intent)
+        } catch (e: Exception) {
+            try {
+                val intent = Intent(Settings.ACTION_MANAGE_DEFAULT_APPS_SETTINGS)
+                startActivity(intent)
+            } catch (_: Exception) {
+                Toast.makeText(this, "Abra Configurações > Apps > Apps padrão > App de início", Toast.LENGTH_LONG).show()
+            }
+        }
     }
 
     override fun onResume() {
@@ -105,11 +172,19 @@ class LauncherActivity : AppCompatActivity() {
             gestureHandler.resolveGestureAction(action)
         }
 
+        // intercept touches at the root level so swipes work even over the grid
         val rootView = findViewById<View>(R.id.launcher_root)
         rootView.setOnTouchListener { _, event ->
             gestureHandler.scaleDetector.onTouchEvent(event)
             gestureHandler.gestureDetector.onTouchEvent(event)
-            true
+            false // pass through to children too
+        }
+
+        // also set on the home grid to catch swipes over app icons
+        homeGrid.setOnTouchListener { _, event ->
+            gestureHandler.scaleDetector.onTouchEvent(event)
+            gestureHandler.gestureDetector.onTouchEvent(event)
+            false
         }
     }
 
@@ -237,8 +312,9 @@ class LauncherActivity : AppCompatActivity() {
         clockText.setTextColor(colors.textPrimary)
         dateText.setTextColor(colors.textSecondary)
 
+        // dock: transparent background, no purple bar
         val dockBg = findViewById<View>(R.id.dock_container)
-        dockBg?.background = ColorDrawable(colors.dockBackground).apply { alpha = 180 }
+        dockBg?.background = ColorDrawable(Color.TRANSPARENT)
 
         searchBar.background?.setTint(colors.searchBarBackground)
     }

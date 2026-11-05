@@ -1,9 +1,13 @@
 package com.mahi.launcher
 
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
+import android.os.Build
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
+import android.view.WindowManager
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.Toast
@@ -25,6 +29,14 @@ class AppDrawerActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         overridePendingTransition(R.anim.slide_up, R.anim.fade_out)
+
+        // blur behind the drawer window
+        window.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            window.addFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND)
+            window.attributes.blurBehindRadius = 30
+        }
+
         setContentView(R.layout.activity_app_drawer)
 
         appRepository = AppRepository(this)
@@ -122,7 +134,8 @@ class AppDrawerActivity : AppCompatActivity() {
     private fun applyTheme() {
         val colors = themeManager.getColors()
         val root = findViewById<View>(R.id.drawer_root)
-        root.setBackgroundColor(colors.drawerBackground)
+        // semi-transparent dark overlay instead of solid color
+        root.setBackgroundColor(Color.parseColor("#D0000000"))
         searchInput.setTextColor(colors.searchBarText)
         searchInput.setHintTextColor(colors.textSecondary)
         searchInput.background?.setTint(colors.searchBarBackground)
